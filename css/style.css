@@ -1,0 +1,7 @@
+.card-body .active-task-link {
+  color: #ff3547 !important;
+}
+
+.card-body .completed-task-link {
+  color: #33b5e5 !important;
+}
