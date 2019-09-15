@@ -152,10 +152,8 @@ class Database {
 				];
 
 			}
-	}
-		//Redirect
-		header ('Location: '.$location);
-		exit; 
+		}
+
 	}
 //Helper function for date format
 	public function dateShow($date){		

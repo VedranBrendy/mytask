@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>myTasks</title>
+    <title>myTasks | Register</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="css/mdb.min.css" rel="stylesheet">
@@ -148,7 +148,18 @@
     <script type="text/javascript" src="js/mdb.min.js"></script>
 
 
-
+    <script type="text/javascript">
+    $(document).ready(function(){
+     
+        <?php
+        // toastr output & session reset
+         if(isset($_SESSION['toastr'])){
+            echo 'toastr.'.$_SESSION['toastr']['type'].'("'.$_SESSION['toastr']['message'].'", "'.$_SESSION['toastr']['title'].'")';
+            unset($_SESSION['toastr']);
+        } 
+        ?>          
+    });
+</script> 
  
 </body>
 

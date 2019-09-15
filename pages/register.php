@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Material Design Bootstrap</title>
+    <title>myTasks | Register</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -100,7 +100,7 @@
       }
  
       //Make sure errors are empty
-      if (empty($data['regfname_error']) && empty($data['reglname_error']) && empty($data['regusername_error']) &&        empty($data['regemail_error']) && empty($data['regpass_error']) && empty($data['confregpass_error'])) {
+      if (empty($data['regfname_error']) && empty($data['reglname_error']) && empty($data['regusername_error']) && empty($data['regemail_error']) && empty($data['regpass_error']) && empty($data['confregpass_error'])) {
         //Validate
           //Encrypt Password
           $enc_password = password_hash($data['regpass'], PASSWORD_BCRYPT);
@@ -123,14 +123,9 @@
       //If row was inserted
       if($database->lastInsertId()){
 
-      //Show success message -> function redirect(redirect to page, message title, message, message type);
-			$database->redirect('home.php','Register', 'You are now registered! Login!', 'success');
-
-		} else {
-			//Show error message
-			$database->redirect('home.php','Error', 'Something went wrong. Try insert data again', 'danger');
-
-      } 
+        header("Location: ../index.php");
+		
+      }
     
   }//first if statement
    
@@ -139,19 +134,16 @@
 <div class="container">
   <div class="row">
     <div class="col-3">
-
     </div>
- 
     <div class="col-6 mt-5 login-divcard">
 
-
-<!--Card-->
+      <!--Card-->
       <div class="card mt-5">
 
           <!--Card content-->
           <div class="card-body">
               <!--Title-->
-              <h4 class="card-title text-center">MyTaske register form</h4>
+              <h4 class="card-title text-center">MyTasks register form</h4>
               <!--Text-->
 
               <!-- Default form register -->
@@ -228,6 +220,19 @@
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="../js/mdb.min.js"></script>
+
+        <script type="text/javascript">
+    $(document).ready(function(){
+     
+        <?php
+        // toastr output & session reset
+         if(isset($_SESSION['toastr'])){
+            echo 'toastr.'.$_SESSION['toastr']['type'].'("'.$_SESSION['toastr']['message'].'", "'.$_SESSION['toastr']['title'].'")';
+            unset($_SESSION['toastr']);
+        } 
+        ?>          
+    });
+</script> 
 </body>
 
 </html>
