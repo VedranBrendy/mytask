@@ -1,5 +1,22 @@
+<?php 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+if (basename($_SERVER['PHP_SELF']) == 'index.php' || basename($_SERVER['PHP_SELF']) == 'login.php' || basename($_SERVER['PHP_SELF']) == 'register.php') {
+
+    ?>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+         <a class="navbar-brand" href="home.php"><?php echo SITENAME; ?></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<?php
+
+} else {
+?>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
          <a class="navbar-brand" href="home.php"><?php echo SITENAME; ?></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,3 +48,9 @@
         </div>
     </div>
 </nav>
+
+<?php 
+
+}
+
+?>

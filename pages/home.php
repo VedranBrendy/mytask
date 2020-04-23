@@ -1,46 +1,15 @@
 <?php include_once('../assets/header.php'); ?>
 <?php include_once('../assets/navbar.php'); ?>
 
+
 <?php 
+
 $user_id = $_SESSION['user_id'];
+$database = new Database;
 
-// GET INFO FROM DB FOR LISTS COUNT
-$database->query("SELECT * FROM lists WHERE list_user = $user_id ");
-//Execute
-$database->execute();
-$rows = $database->resultset();
-$countOfLists = $database->rowCount();
-
-
-// GET INFO FROM DB 
-$database->query("SELECT * FROM lists 
-				INNER JOIN tasks 
-				ON tasks.list_id = lists.id 
-				WHERE list_user = $user_id");
-//Execute
-$database->execute();
-$lines = $database->resultset();
-
-
-// GET INFO FROM DB FOR COUNT OF ACTIV TASKS
-$database->query("SELECT * FROM lists 
-				INNER JOIN tasks 
-				ON tasks.list_id = lists.id 
-				WHERE list_user = $user_id AND is_complete = 0");
-//Execute
-$database->execute();
-$countOfActivTasks = $database->rowCount();
-
-
-// GET INFO FROM DB FOR COUNT OF COMPLETED TASKS
-$database->query("SELECT * FROM lists 
-				INNER JOIN tasks 
-				ON tasks.list_id = lists.id 
-				WHERE list_user = $user_id AND is_complete = 1");
-//Execute
-$database->execute();
-$countOfCompletedTasks = $database->rowCount();
-
+$countOfLists = $database->countOfLists($user_id);
+$countOfActivTasks = $database->countOfActivTasks($user_id);
+$countOfCompletedTasks =  $database->countOfCompletedTasks($user_id);
 
 //LINES == TASKS TABLE 
 //ROWS 	== LISTS TABLE
@@ -67,6 +36,8 @@ $countOfCompletedTasks = $database->rowCount();
 
 if ($countOfLists > 0) { 
 
+	$rows = $database->countOfListRows();
+
 	foreach ($rows as $row) {
 
 			?>
@@ -80,10 +51,7 @@ if ($countOfLists > 0) {
 						<button class="btn btn-link" data-toggle="collapse" data-target="#collapse<?php echo $row['id']; ?>" aria-expanded="true" aria-controls="collapseOne">
 							<?php 
 							// GET COUNT OF TASKS
-							$database->query("SELECT COUNT(*) AS count FROM tasks WHERE list_id = '$row[id]'");
-							//Execute
-							$database->execute();
-							$records = $database->resultset();
+							$records = $database->tasksCount($row['id']);
 
 							foreach ($records as $record) {
 							
@@ -140,6 +108,9 @@ if ($countOfLists > 0) {
 						<div class="col-md-6">
 						<p class="text-uppercase ml-5 text-danger"><strong>Active tasks</strong></p>
 						<?php
+
+						$lines = $database->tasksInList($user_id);
+
 							foreach ($lines as $line) {
 
 								if ($line['list_id'] == $row['id'] && $line['is_complete'] == 0) {
@@ -149,7 +120,7 @@ if ($countOfLists > 0) {
 					<div class="ml-5 mb-2 text-uppercase">
 						<p><a href="edit_task.php?id=<?php echo $line['id']; ?>" name="edit_task" class="active-task-link">
 						<?php echo $line['task_name']; ?></a>
-							<small class="ml-2 font-weight-bold"><?php echo $database->dateShow($line['due_date']); ?></small>
+							<small class="ml-2 font-weight-bold"><?php echo dateShow($line['due_date']); ?></small>
 						</p>										
 					</div>
 
@@ -226,13 +197,9 @@ if ($countOfLists > 0) {
 <?php 
 if (isset($_GET['id']) && !empty($_GET['id']) && (int)$_GET['id'] > 0) {
 
-	$list_id = (int)$_GET['id'];
+		$list_id = (int)$_GET['id'];
 
-		//Query
-	$database->query('SELECT * FROM lists WHERE id = :id');
-	$database->bind(':id', $list_id);
-	$database->execute();
-	$row = $database->single();
+		$database->listIdToDB($list_id);
 
 }
 

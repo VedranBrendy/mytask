@@ -3,8 +3,7 @@
 
 <?php 
 
-require_once('../config/config.php');
-require_once('../classes/Database.php');
+require_once('../functions/init.php');
 
 $id = (int)$_GET['id'];
 
@@ -14,7 +13,7 @@ if (isset($_POST['edit_list']) && isset($_POST['id'])) {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
-    $database = new Database;
+
 
     // Sanitize POST
     $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -66,11 +65,11 @@ if (isset($_POST['edit_list']) && isset($_POST['id'])) {
 
     if ($database->rowCount()) {
      	//Show success message -> function redirect(redirect to page, message title, message, message type);
-			$database->redirect('home.php','', 'List updated', 'warning');
+		  redirect('home.php','', 'List updated', 'warning');
 
 		} else {
 			//Show error message
-			$database->redirect('home.php','', 'Something went wrong', 'danger');
+			redirect('home.php','', 'Something went wrong', 'danger');
 
 		}
 

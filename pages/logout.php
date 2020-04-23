@@ -1,7 +1,7 @@
 <?php 
-	require_once('../classes/User.php');
-	
-	$user = new User;
+require_once('../functions/init.php');
+
+	$user = new User($database);
 	$user->logout();
 
  ?>

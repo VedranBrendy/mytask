@@ -93,75 +93,95 @@ class Database {
 
 	}
 
+	// GET INFO FROM DB FOR COUNT LISTS
+	public function countOfLists($user_id){
 
-	//Redirect To Page
-	function redirect($page = FALSE, $message_title = NULL, $message = NULL, $message_type = NULL){
+		$this->user_id = $user_id;
+	
+		$this->query("SELECT * FROM lists WHERE list_user = $user_id");
+		//Execute
+		$this->execute();
+		$rows = $this->resultset();
+		$countOfLists = $this->rowCount();
+		return $countOfLists;
+	}
 
+	// GET INFO FROM DB FOR ROW COUNT
+	public function countOfListRows(){
+	
+		$this->query("SELECT * FROM lists");
+		//Execute
+		$this->execute();
+		$rows = $this->resultset();
+		return $rows;
+	}
 
-		if (is_string ($page)) {
-			$location = $page;
-		} else {
-			$location = $_SERVER ['SCRIPT_NAME'];
-		}
+	//Number task in list
+	public function tasksInList($id){
 
-		//Check For Message
-		if($message != NULL){
-			//Set Message
-			$_SESSION['message'] = $message;
-		}
+		$this->id = $id;
 
-		if ($message_title != NULL) {
-			//Set message title
-			$_SESSION['message_title'] = $message_title;
-		}
+		$this->query("SELECT * FROM lists 
+				INNER JOIN tasks 
+				ON tasks.list_id = lists.id 
+				WHERE list_user = $id");
+		//Execute
+		$this->execute();
+		return $lines = $this->resultset();
+	}
 
-		//Check For Type
-		if($message_type != NULL){
+	// GET INFO FROM DB FOR COUNT OF ACTIV TASKS
+	public function countOfActivTasks($id){
 
-			//Set Message Type
-			$_SESSION['message_type'] = $message_type;
+		$this->id = $id;
+		
+		$this->query("SELECT * FROM lists 
+				INNER JOIN tasks 
+				ON tasks.list_id = lists.id 
+				WHERE list_user = $id AND is_complete = 0");
+		//Execute
+		$this->execute();
+		return $countOfActivTasks = $this->rowCount();
+	}
 
-			if ($message_type == 'success') {
+	//Count of completed tasks
+	public function countOfCompletedTasks($id){
 
-				$_SESSION['toastr'] = [
-					'type'		=> 'success',
-					'message'	=> $message,
-					'title'   => $message_title
-				];
-
-			}	elseif ($message_type == 'danger') {
-				$_SESSION['toastr'] = [
-					'type'    => 'error', 
-					'message' =>  $message,
-					'title'  	=> $message_title
-				];
-			} elseif ($message_type == 'warning') {
-
-				$_SESSION['toastr'] = [
-					'type'    => 'warning', 
-					'message' =>  $message,
-					'title'  	=> $message_title
-				];
-
-			} elseif ($message_type == 'info') {
-
-				$_SESSION['toastr'] = [
-					'type'    => 'info', 
-					'message' =>  $message,
-					'title'  	=> $message_title
-				];
-
-			}
-		}
+		$this->id = $id;
+		$this->query("SELECT * FROM lists 
+				INNER JOIN tasks 
+				ON tasks.list_id = lists.id 
+				WHERE list_user = $id AND is_complete = 1");
+		//Execute
+		$this->execute();
+		return $countOfCompletedTasks = $this->rowCount();
 
 	}
-//Helper function for date format
-	public function dateShow($date){		
-		$year = substr($date,0,4);
-		$month = substr($date,5,2);
-		$day = substr($date,8,2);
-		return $day.".".$month.".".$year;
+
+	// GET COUNT OF TASKS
+	public function tasksCount($rowID){
+
+		$this->id = $rowID;
+
+		$this->query("SELECT COUNT(*) AS count FROM tasks WHERE list_id = $rowID");
+		//Execute
+		$this->execute();
+		return $tasksCount = $this->resultset();
 
 	}
+
+	//Select list id for inserting in tasks list
+	public function listIdToDB($id){
+
+		$this->id = $id;
+
+		//Query
+		$this->query('SELECT * FROM lists WHERE id = :id');
+		$this->bind(':id', $id);
+		$this->execute();
+		return $row = $this->single();
+
+	}
+
 
 }

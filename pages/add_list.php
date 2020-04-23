@@ -3,18 +3,12 @@
 
 <?php 
 
-require_once('../config/config.php');
-require_once('../classes/Database.php');
-
-
 
 if (isset($_POST['add_list'])) {
 
 	// Check if POST
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
-		$database = new Database;
 	    // Sanitize POST
 		$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -63,11 +57,11 @@ if (isset($_POST['add_list'])) {
 	  //If row was inserted
 		if ($database->lastInsertId()) {
 			//Show success message -> function redirect(redirect to page, message title, message, message type);
-			$database->redirect('home.php','', 'List Added', 'success');
+			redirect('home.php','', 'List Added', 'success');
 
 		} else {
 			//Show error message
-			$database->redirect('home.php','', 'Something went wrong', 'danger');
+			redirect('home.php','', 'Something went wrong', 'danger');
 
 		}
 

@@ -3,32 +3,28 @@
 
 <?php 
 
-require_once('../config/config.php');
-require_once('../classes/Database.php');
-
-
 if (isset($_POST['add_task'])) {
 
   //die('BUTTON ADD TASK PRESSED');
 
 //Testing inputs
- /*  echo $_POST['task_name'] . '<br>';
+/*    echo $_POST['task_name'] . '<br>';
   echo $_POST['task_body'] . '<br>';
-  echo $_POST['list_name'] . '<br>';
+  echo 'ID: '.$_POST['list_id'] . '<br>';
   echo $_POST['due_date'] . '<br>';
-  die(); */
-
+  die();  
+ */
   // Check if POST
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
-    $database = new Database;
+
     // Sanitize POST
     $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
     $data = [
       'task_name' => trim($_POST['task_name']),
-      'list_name' => $_POST['list_name'],
+/*       'list_name' => $_POST['list_name'], */
       'task_body' => trim($_POST['task_body']),
       'task_name_error' => '',
       'task_body_error' => ''
@@ -75,11 +71,11 @@ if (isset($_POST['add_task'])) {
     //If row was inserted
 		if ($database->lastInsertId()) {
 			//Show success message -> function redirect(redirect to page, message title, message, message type);
-			$database->redirect('home.php','', 'Task Added', 'success');
+		redirect('home.php','', 'Task Added', 'success');
 
 		} else {
 			//Show error message
-			$database->redirect('home.php','', 'Something went wrong', 'danger');
+		redirect('home.php','', 'Something went wrong', 'danger');
 
 		}
 
@@ -124,12 +120,12 @@ if (isset($_POST['add_task'])) {
             $rows = $database->resultset();
 
             //Testing dropdown
-            /* if ($database->rowCount() > 0) {
+           /*   if ($database->rowCount() > 0) {
               foreach ($rows as $row) {
                 echo $row['id'];
                 echo $row['list_name'];
               }
-            } */
+            }  */
             ?>
 
             <div class="form-group">

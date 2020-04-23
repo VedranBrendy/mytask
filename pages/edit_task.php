@@ -3,8 +3,7 @@
 
 <?php 
 
-require_once('../config/config.php');
-require_once('../classes/Database.php');
+require_once('../functions/init.php');
 
 $id = (int)$_GET['id'];
 
@@ -14,8 +13,6 @@ if (isset($_POST['edit_task']) && isset($_POST['id'])) {
   // Check if POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
-        $database = new Database;
         // Sanitize POST
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -78,27 +75,34 @@ if (isset($_POST['edit_task']) && isset($_POST['id'])) {
 
         
     //Execute
-    $database->execute();
-
-    if ($database->rowCount()) {
+    if ( $database->execute()) {
       //Show success message -> function redirect(redirect to page, message title, message, message type);
 
-      if (isset($_POST['checkbox']) == '1') {
+/*       if (isset($_POST['checkbox']) == '1') {
 
-          $database->redirect('home.php','', 'Task Completed', 'info');
+        redirect('home.php','', 'Task Completed', 'info');
 
 
         }elseif (isset($_POST['checkbox']) == '0') {
 
-          $database->redirect('home.php','', 'Task Activated', 'danger');
+         redirect('home.php','', 'Task Activated', 'danger');
 
-        }
+        } */
 
-			$database->redirect('home.php','', 'Task Updated', 'warning');
+
+    redirect($page='home.php','', 'Task Updated', 'warning');
+      
+      	if (is_string ($page)) {
+      echo 'location: '.$location = $page.'<br>';
+      die();
+		} else {
+    echo $location = $_SERVER['SCRIPT_NAME'].'<br>';
+    die();
+		}
 
 		} else {
 			//Show error message
-			$database->redirect('home.php','', 'Something went wrong', 'danger');
+		redirect('home.php','', 'Something went wrong', 'danger');
 
 		}
 
